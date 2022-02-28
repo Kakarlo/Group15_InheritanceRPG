@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="m1">BasicAttack</string>
+    <string name="m2">FullSlash</string>
+    <string name="m3">ChargedAttack</string>
+    <string name="m4">Stun</string>
+
+    <string name="m5">DoubleAttack</string>
+    <string name="m6">Heal</string>
+    <string name="m7">SpeedUP</string>
+    <string name="m8">Slow</string>
+
+    <string name="noMP">"You don\'t have enough MP"</string>
+
+    <string-array name="move1">
+        <item>BasicAttack</item>
+        <item>Basic Attack</item>
+        <item>\'s basic attack dealt </item>
+        <item> to the </item>
+        <item>\'s basic attack has failed</item>
+    </string-array>
+
+    <string-array name="move2">
+        <item>FullSlash</item>
+        <item>Full Slash</item>
+        <item>\'s full slash dealt </item>
+        <item> to the </item>
+        <item>\'s full slash has failed</item>
+    </string-array>
+
+    <string-array name="move3">
+        <item>ChargedAttack</item>
+        <item>Charged Attack</item>
+        <item>\'s charged attack dealt </item>
+        <item> to the </item>
+        <item>\'s charged attack has failed</item>
+    </string-array>
+
+    <string-array name="move4">
+        <item>Stun</item>
+        <item>Stun</item>
+        <item>\'s stun dealt </item>
+        <item> to the </item>
+        <item>\'s stun has failed</item>
+    </string-array>
+
+
+
+
+
+
+
+</resources>
