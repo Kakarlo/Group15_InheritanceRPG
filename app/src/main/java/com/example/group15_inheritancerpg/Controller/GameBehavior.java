@@ -17,15 +17,17 @@ import java.util.Random;
 @SuppressLint("SetTextI18n")
 public class GameBehavior {
 
-    int random;
-    int speedLine = 300;
-    boolean win;
+    private final int speedLine = 300;
+    private boolean win;
+    private boolean reset;
+    public boolean getReset() {return this.reset;}
+    public void setReset(Boolean state) {this.reset = state;}
     Method heroSkill1, heroSkill2, heroSkill3, heroSkill4;
     Method monsSkill1, monsSkill2, monsSkill3, monsSkill4;
 
 
     //Speed System
-    public void speed(Hero hero, Monster monster){
+    public boolean speed(Hero hero, Monster monster){
         while (hero.getHeroCurrentSpeed() <= speedLine && monster.getMonsCurrentSpeed() <= speedLine) {
             hero.setHeroCurrentSpeed(hero.getHeroCurrentSpeed() + hero.getHeroBaseSpeed());
             monster.setMonsCurrentSpeed(monster.getMonsCurrentSpeed() + monster.getMonsBaseSpeed());
@@ -41,6 +43,7 @@ public class GameBehavior {
         }
         Log.d(TAG, "hero: "+hero.getHeroCurrentSpeed());
         Log.d(TAG, "monster: "+monster.getMonsCurrentSpeed());
+        return hero.getHeroCurrentSpeed() >= speedLine;
     }
 
     //Move sets
@@ -62,33 +65,40 @@ public class GameBehavior {
     }
 
     //battle phase //TODO: make a class or method to check the debuffs before move
-    public void battlePhase(MoveSets move, Hero hero, Monster monster, TextView menuText) throws InvocationTargetException, IllegalAccessException {
+    public boolean battlePhase(MoveSets move, Hero hero, Monster monster, TextView menuText) throws InvocationTargetException, IllegalAccessException {
         Random randomizer = new Random();
-        random = randomizer.nextInt(100) + 1;
+        boolean moved = false;
         if (hero.getHeroCurrentSpeed() >= speedLine && hero.getHeroCurrentSpeed() > monster.getMonsCurrentSpeed()) {
             if (hero.getHeroStunned() > 0) {
                 menuText.setText(hero.getHeroName() + " is stunned for " + hero.getHeroStunned() + " turns");
                 hero.setHeroStunned(hero.getHeroStunned() - 1);
                 hero.setHeroCurrentSpeed(hero.getHeroCurrentSpeed() - speedLine);
+                moved = true;
             }else{
                 if (hero.getState1()) {
                     heroSkill1.invoke(move, hero, monster, menuText, speedLine);
                     hero.setState1(false);
+                    moved = true;
                 }
                 if (hero.getState2()) {
                     heroSkill2.invoke(move, hero, monster, menuText, speedLine);
                     hero.setState2(false);
+                    moved = true;
                 }
                 if (hero.getState3()) {
                     heroSkill3.invoke(move, hero, monster, menuText, speedLine);
                     hero.setState3(false);
+                    moved = true;
                 }
                 if (hero.getState4()) {
                     heroSkill4.invoke(move, hero, monster, menuText, speedLine);
                     hero.setState4(false);
+                    moved = true;
                 }
                 if (monster.getMonsHP() <= 0) {
+                    reset = true;
                     win = true;
+                    moved = true;
                 }
             }
         } else {
@@ -96,21 +106,25 @@ public class GameBehavior {
                 menuText.setText(monster.getMonsName() + " is stunned for " + monster.getMonsStunned() + " turns");
                 monster.setMonsStunned(monster.getMonsStunned() - 1);
                 monster.setMonsCurrentSpeed(monster.getMonsCurrentSpeed() - speedLine);
+                moved = true;
             } else {
                 if (monster.getMonsMP() <= 0) {
                     move.BasicAttack(monster, hero, menuText, speedLine);
+                    moved = true;
                 } else {
                     int randomAttack = randomizer.nextInt(4);
                     switch (randomAttack) {
                         case 0:
                             move.BasicAttack(monster, hero, menuText, speedLine);
+                            moved = true;
                             break;
                         case 1:
                             if (monster.getMonsMP() - 50 >= 0) {
                                 move.FullSlash(monster, hero, menuText, speedLine);
                             } else {
-                                    move.BasicAttack(monster, hero, menuText, speedLine);
+                                move.BasicAttack(monster, hero, menuText, speedLine);
                             }
+                            moved = true;
                             break;
                         case 2:
                             if (monster.getMonsMP() - 50 >= 0) {
@@ -118,6 +132,7 @@ public class GameBehavior {
                             } else {
                                 move.BasicAttack(monster, hero, menuText, speedLine);
                             }
+                            moved = true;
                             break;
                         case 3:
                             if (monster.getMonsMP() - 50 >= 0) {
@@ -125,15 +140,18 @@ public class GameBehavior {
                             } else {
                                 move.BasicAttack(monster, hero, menuText, speedLine);
                             }
+                            moved = true;
                             break;
                     }
                 }
                 if (hero.getHeroHP() <= 0) {
+                    reset = true;
                     win = false;
+                    moved = true;
                 }
             }
         }
-
+    return moved;
     }
 
     //reset stats back

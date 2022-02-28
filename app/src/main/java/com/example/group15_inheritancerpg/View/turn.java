@@ -27,6 +27,7 @@ import com.example.group15_inheritancerpg.Model.Monster;
 import com.example.group15_inheritancerpg.Model.MoveSets;
 import com.example.group15_inheritancerpg.R;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
 
 @SuppressLint("SetTextI18n")
@@ -39,30 +40,33 @@ public class turn extends AppCompatActivity implements View.OnClickListener {
     FrameLayout infoBox,heroStat,monsStat;
     Animation leftRight,rightLeft;
 
-    GameBehavior game = new GameBehavior();
+    GameBehavior langerbaul = new GameBehavior();
     MoveSets move = new MoveSets();
     Hero hero = new Hero(this, "Knight", 1500, 100, 110, R.string.m1, R.string.m2, R.string.m3, R.string.m4);
     Monster monster = new Monster("Barathrum", 1000, 75, 90);
 
-    int time = 700; //for the speed of the dialogue
-    //TODO:Change this bootleg system
-    CountDownTimer timer;
-    boolean auto = true; //set to true for auto turn
+    public void turnCheck() {
+        if(langerbaul.speed(hero,monster)) {
+            // Hero's turn
+            showButton();
+        } else {
+            // Monster's turn
+            hideButton();
+        }
+    }
 
-    public void nextTurn() {
-        timer = new CountDownTimer(time, time) {
-            public void onTick(long l) { }
-            public void onFinish() {
-                try {
-                    battle();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                hideButton();
-                timer.cancel();
+    public void battle() { //attacks
+        if (langerbaul.getReset()) {
+            win();
+            langerbaul.setReset(false);
+        } else {
+            try {
+                hide(langerbaul.battlePhase(move, hero, monster, menuText));
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        };
-        timer.start();
+        }
+        bar();
     }
 
     public void showButton(){
@@ -97,49 +101,20 @@ public class turn extends AppCompatActivity implements View.OnClickListener {
         menuBox.setClickable(true);
     }
 
-    public void battle() throws Exception {
-        game.speed(hero,monster);
-        turnCheck();
-        game.battlePhase(move, hero, monster, menuText);
-        bar();
-        if (monster.getMonsHP() <= 0 || hero.getHeroHP() <= 0) {
-          win();
+    public void hide(boolean move){
+        if (move) {
+            hideButton();
         }
     }
 
     //resets the game
     public void win() {
-        if(game.reset(hero, monster)) {
+        if(langerbaul.reset(hero, monster)) {
             mwinIndicator.setVisibility(View.VISIBLE);
             mwinIndicator.setText("You WIN!");
         } else {
             mwinIndicator.setVisibility(View.VISIBLE);
             mwinIndicator.setText("You LOSE!");
-        }
-    }
-
-    public void turnCheck(){
-        if (hero.getHeroCurrentSpeed() >= monster.getMonsCurrentSpeed()){
-            showButton();
-        } else {
-            hideButton();
-            //nextTurn();
-        }
-    }
-
-    //manual movement of turns
-    public void next(View v) throws Exception {
-        game.speed( hero, monster);
-        turnCheck();
-        game.battlePhase(move, hero, monster, menuText);
-        bar();
-    }
-
-    public void info(View v) {
-        if(infoBox.getVisibility() == View.GONE){
-            infoBox.setVisibility(View.VISIBLE);
-        } else {
-            infoBox.setVisibility(View.GONE);
         }
     }
 
@@ -170,6 +145,20 @@ public class turn extends AppCompatActivity implements View.OnClickListener {
             monsHpBar.setProgressTintList(ColorStateList.valueOf(getResources().getColor(R.color.Low)));
         } else {
             monsHpBar.setProgressTintList(ColorStateList.valueOf((getResources().getColor(R.color.Max))));
+        }
+    }
+
+    //manual movement of turns
+    public void next(View v) {
+        turnCheck();
+        battle();
+    }
+
+    public void info(View v) {
+        if(infoBox.getVisibility() == View.GONE){
+            infoBox.setVisibility(View.VISIBLE);
+        } else {
+            infoBox.setVisibility(View.GONE);
         }
     }
 
@@ -250,60 +239,34 @@ public class turn extends AppCompatActivity implements View.OnClickListener {
         monsStat.setAnimation(rightLeft);
 
         try {
-            game.moveSets(hero);
+            langerbaul.moveSets(hero);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        try {
-            battle();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        turnCheck();
     }
 
     @Override
     public void onClick(View v){
+        hideButton();
         //Sets the winning text to gone
         mwinIndicator.setVisibility(View.GONE);
         switch (v.getId()) {
             case R.id.basicAttack:
                 hero.setState1(true);
-                try {
-                    battle();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                hideButton();
                 break;
             case R.id.fullSlash:
                 hero.setState2(true);
-                try {
-                    battle();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                hideButton();
                 break;
             case R.id.chargedAttack:
                 hero.setState3(true);
-                try {
-                    battle();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                hideButton();
                 break;
             case R.id.stun:
                 hero.setState4(true);
-                try {
-                    battle();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                hideButton();
                 break;
         }
+        battle();
     }
 
 }

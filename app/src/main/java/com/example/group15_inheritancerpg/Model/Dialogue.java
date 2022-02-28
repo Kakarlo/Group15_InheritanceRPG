@@ -1,7 +1,6 @@
 package com.example.group15_inheritancerpg.Model;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 
 import com.example.group15_inheritancerpg.R;
