@@ -223,10 +223,10 @@ public class turn extends AppCompatActivity implements View.OnClickListener {
             finish();
         });
         //Button Text
-        basicAttack.setText(hero.getSkill1());
-        fullSlash.setText(hero.getSkill2());
-        chargedAttack.setText(hero.getSkill3());
-        stun.setText(hero.getSkill4());
+        basicAttack.setText(hero.getSkillName1());
+        fullSlash.setText(hero.getSkillName2());
+        chargedAttack.setText(hero.getSkillName3());
+        stun.setText(hero.getSkillName4());
 
         //Layout
         menuBox = findViewById(R.id.menuBox);

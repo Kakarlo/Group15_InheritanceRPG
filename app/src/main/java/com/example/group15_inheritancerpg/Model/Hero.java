@@ -18,9 +18,8 @@ public class Hero {
     private int heroStunned;
     private String heroName;
     //skills sets
-    private Context context;
+    private final Context context;
     private int move1, move2, move3, move4;
-    private String skill1, skill2, skill3, skill4;
     private boolean state1, state2, state3, state4;
 
     public void heroSkill (int move1, int move2, int move3, int move4) {
@@ -29,22 +28,14 @@ public class Hero {
         this.move3 = move3;
         this.move4 = move4;
     }
-    public String getSkill1() {
-        this.skill1 = context.getResources().getString(move1);
-        return this.skill1;
-    }
-    public String getSkill2() {
-        this.skill2 = context.getResources().getString(move2);
-        return this.skill2;
-    }
-    public String getSkill3() {
-        this.skill3 = context.getResources().getString(move3);
-        return this.skill3;
-    }
-    public String getSkill4() {
-        this.skill4 = context.getResources().getString(move4);
-        return this.skill4;
-    }
+    public String getSkill1() {return context.getResources().getString(move1).replaceAll("\\s+","");}
+    public String getSkill2() {return context.getResources().getString(move2).replaceAll("\\s+","");}
+    public String getSkill3() {return context.getResources().getString(move3).replaceAll("\\s+","");}
+    public String getSkill4() {return context.getResources().getString(move4).replaceAll("\\s+","");}
+    public String getSkillName1() {return context.getResources().getString(move1);}
+    public String getSkillName2() {return context.getResources().getString(move2);}
+    public String getSkillName3() {return context.getResources().getString(move3);}
+    public String getSkillName4() {return context.getResources().getString(move4);}
 
     public int getMove1() {return this.move1;}
     public int getMove2() {return this.move2;}

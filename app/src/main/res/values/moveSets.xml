@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="m1">BasicAttack</string>
-    <string name="m2">FullSlash</string>
-    <string name="m3">ChargedAttack</string>
+    <string name="m1">Basic Attack</string>
+    <string name="m2">Full Slash</string>
+    <string name="m3">Charged Attack</string>
     <string name="m4">Stun</string>
 
     <string name="m5">DoubleAttack</string>
