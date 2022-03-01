@@ -53,6 +53,7 @@ public class Combat {
     }
 
     //Attack system
+
     private void heroAttackSys(int[] atk) {
         //Checks if you have enough mp
         if(hero.getHeroMP() >= atk[3] ) {
@@ -63,6 +64,7 @@ public class Combat {
                 hero.setHeroDamage(randomizer.nextInt(atk[1] - atk[0]) + atk[0]);
                 monster.setMonsHP(monster.getMonsHP() - hero.getHeroDamage());
                 menuText.setText(hero.getHeroName() + heroAttackTxt(1) + hero.getHeroDamage() + " to the " + monster.getMonsName());
+                heroSpecial(atk);
                 Log.d(TAG, "hero: " + hero.getHeroAtkState() + hero.getHeroName() + heroAttackTxt(1) + hero.getHeroDamage() + " to the " + monster.getMonsName());
             } else {
                 menuText.setText(hero.getHeroName() + heroAttackTxt(2));
@@ -79,6 +81,44 @@ public class Combat {
         }
     }
 
+    private void heroSpecial(int[] atk) {
+        int x = atk[atk.length - 1];
+        switch (x) {
+            case 1:
+                break;
+            case 2:
+                monster.setMonsStunned(atk[atk.length - 2]);
+                break;
+            case 3:
+                int a = atk[atk.length - 2];
+                int b = hero.getHeroMaxHP();
+                int c = b * a / 100;
+                hero.setHeroHP(hero.getHeroHP() + c);
+                if (hero.getHeroHP() > hero.getHeroMaxHP()){
+                    hero.setHeroHP(hero.getHeroMaxHP());
+                }
+                break;
+            case 4:
+                //monster.setMonsBurned(atk[atk.length - 2]);
+                //monster.setMonsBurnedDamage(atk[atk.length - 3]);
+                break;
+            case 5:
+                //slowness
+                break;
+            case 6:
+                //freeze
+                //freeze damage
+                break;
+            case 7:
+                //lower enemy stats
+                break;
+            case 8:
+                //elevate certain state
+                break;
+        }
+
+    }
+
     private void monsAttackSys(int[] atk) {
         //Checks if you have enough mp
         monster.setMonsCurrentSpeed(monster.getMonsCurrentSpeed() - speedLine);
@@ -90,6 +130,7 @@ public class Combat {
                 monster.setMonsDamage(randomizer.nextInt(atk[1] - atk[0]) + atk[0]);
                 hero.setHeroHP(hero.getHeroHP() - monster.getMonsDamage());
                 menuText.setText(monster.getMonsName() + monsAttackTxt(1) + monster.getMonsDamage() + " to the " + hero.getHeroName());
+                monsSpecial(atk);
                 Log.d(TAG, "monsAttackSys: " + monster.getMonsName() + monsAttackTxt(1) + monster.getMonsDamage() + " to the " + hero.getHeroName());
             } else {
                 menuText.setText(monster.getMonsName() + monsAttackTxt(2));
@@ -111,6 +152,44 @@ public class Combat {
                 monster.setMonsMP(monster.getMonsMP() + basic[4]);
             }
         }
+    }
+
+    private void monsSpecial(int[] atk) {
+        int x = atk[atk.length - 1];
+        switch (x) {
+            case 1:
+                break;
+            case 2:
+                hero.setHeroStunned(atk[atk.length - 2]);
+                break;
+            case 3:
+                int a = atk[atk.length - 2];
+                int b = monster.getMonsMaxHP();
+                int c = b * a / 100;
+                monster.setMonsHP(monster.getMonsHP() + c);
+                if (monster.getMonsHP() > monster.getMonsMaxHP()) {
+                    monster.setMonsHP(monster.getMonsMaxHP());
+                }
+                break;
+            case 4:
+                //monster.setMonsBurned(atk[atk.length - 2]);
+                //monster.setMonsBurnedDamage(atk[atk.length - 3]);
+                break;
+            case 5:
+                //slowness
+                break;
+            case 6:
+                //freeze
+                //freeze damage
+                break;
+            case 7:
+                //lower enemy stats
+                break;
+            case 8:
+                //elevate certain state
+                break;
+        }
+
     }
 
     private String heroAttackTxt(int i ) {

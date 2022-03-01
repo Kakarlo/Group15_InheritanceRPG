@@ -126,11 +126,28 @@
         <item>50</item>
         <item>25</item>
         <item>0</item>
-        <item>1</item>
+        <item>2</item>
+        <item>2</item>
     </integer-array>
 
-    <string name="m5">DoubleAttack</string>
-    <string name="m6">Heal</string>
+    <string-array name="move5">
+        <item>Heal</item>
+        <item>Heal</item>
+        <item>\ has healed 20% of their health and dealt\u0020</item>
+        <item>\'s heal has failed</item>
+    </string-array>
+    <integer-array name="Heal">
+        <item>30</item>
+        <item>50</item>
+        <item>75</item>
+        <item>50</item>
+        <item>0</item>
+        <item>20</item>
+        <item>3</item>
+    </integer-array>
+
+    <string name="m6">DoubleAttack</string>
+    <string name="m5">Heal</string>
     <string name="m7">SpeedUP</string>
     <string name="m8">Slow</string>
 

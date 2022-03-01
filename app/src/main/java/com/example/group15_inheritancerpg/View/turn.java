@@ -165,8 +165,8 @@ public class turn extends AppCompatActivity implements View.OnClickListener {
         setContentView(R.layout.turn);
 
         //Initializing class
-        hero = new Hero(this, "Knight", 1500, 100, 110, R.array.move1, R.array.move2, R.array.move3, R.array.move1);
-        monster = new Monster(this, "Barathrum", 1000, 75, 100 , R.array.move1, R.array.move2, R.array.move3, R.array.move1);
+        hero = new Hero(this, "Knight", 1500, 100, 110, R.array.move1, R.array.move5, R.array.move3, R.array.move4);
+        monster = new Monster(this, "Barathrum", 1000, 75, 100 , R.array.move1, R.array.move5, R.array.move3, R.array.move4);
 
         //Animation Call
         leftRight = AnimationUtils.loadAnimation(this,R.anim.left_to_right);
