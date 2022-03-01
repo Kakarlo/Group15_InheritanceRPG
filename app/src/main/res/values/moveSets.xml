@@ -1,10 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="m1">Basic Attack</string>
-    <string name="m2">Full Slash</string>
-    <string name="m3">Charged Attack</string>
-    <string name="m4">Stun</string>
+    <array name="TemplateBasic">
+        <!-- Attack minimum damage -->
+        <item>75</item>
+        <!--Attack maximum damage -->
+        <item>100</item>
+        <!-- Attack hit chance -->
+        <item>100</item>
+        <!-- Attack mana cost -->
+        <item>0</item>
+        <!-- Attack mana heal -->
+        <item>25</item>
+        <!-- Attack type: basic = 1, stun = 2, heal = 3, burn = 4, slow = 5, freeze = 6, lower stats = 7, higher stats = 8 -->
+        <item>Basic</item>
+    </array>
+
+    <array name="TemplateStun">
+        //Attack minimum damage
+        <item>25</item>
+        //Attack maximum damage
+        <item>40</item>
+        //Attack hit chance
+        <item>50</item>
+        //Attack mana cost
+        <item>25</item>
+        //Attack mana heal
+        <item>0</item>
+        // of turns stunned
+        <item>2</item>
+        <!-- Attack type: basic = 1, stun = 2, heal = 3, burn = 4, slow = 5, freeze = 6, lower stats = 7, higher stats = 8 -->
+        <item>Stun</item>
+    </array>
+
+    <array name="TemplateHeal">
+        //Attack minimum damage
+        <item>25</item>
+        //Attack maximum damage
+        <item>40</item>
+        //Attack hit chance
+        <item>50</item>
+        //Attack mana cost
+        <item>25</item>
+        //Attack mana heal
+        <item>0</item>
+        // of health healed
+        <item>10</item>
+        <!-- Attack type: basic = 1, stun = 2, heal = 3, burn = 4, slow = 5, freeze = 6, lower stats = 7, higher stats = 8 -->
+        <item>Heal</item>
+    </array>
+
+    <array name="TemplateBurn">
+        //Attack minimum damage
+        <item>25</item>
+        //Attack maximum damage
+        <item>40</item>
+        //Attack hit chance
+        <item>50</item>
+        //Attack mana cost
+        <item>25</item>
+        //Attack mana heal
+        <item>0</item>
+        // of burn damage
+        <item>5</item>
+        // of turns burned
+        <item>2</item>
+        <!-- Attack type: basic = 1, stun = 2, heal = 3, burn = 4, slow = 5, freeze = 6, lower stats = 7, higher stats = 8 -->
+        <item>Burn</item>
+    </array>
+
+    <string-array name="move1">
+        <item>BasicAttack</item>
+        <item>Basic Attack</item>
+        <item>\'s basic attack dealt\u0020</item>
+        <item>\'s basic attack has failed</item>
+    </string-array>
+    <integer-array name="BasicAttack">
+        <item>75</item>
+        <item>100</item>
+        <item>100</item>
+        <item>0</item>
+        <item>25</item>
+        <item>1</item>
+    </integer-array>
+
+    <string-array name="move2">
+        <item>FullSlash</item>
+        <item>Full Slash</item>
+        <item>\'s full slash dealt\u0020</item>
+        <item>\'s full slash has failed</item>
+    </string-array>
+    <integer-array name="FullSlash">
+        <item>200</item>
+        <item>300</item>
+        <item>50</item>
+        <item>50</item>
+        <item>0</item>
+        <item>1</item>
+    </integer-array>
+
+    <string-array name="move3">
+        <item>ChargedAttack</item>
+        <item>Charged Attack</item>
+        <item>\'s charged attack dealt\u0020</item>
+        <item>\'s charged attack has failed</item>
+    </string-array>
+    <integer-array name="ChargedAttack">
+        <item>150</item>
+        <item>200</item>
+        <item>50</item>
+        <item>25</item>
+        <item>0</item>
+        <item>1</item>
+    </integer-array>
+
+    <string-array name="move4">
+        <item>Stun</item>
+        <item>Stun</item>
+        <item>\'s stun dealt\u0020</item>
+        <item>\'s stun has failed</item>
+    </string-array>
+    <integer-array name="Stun">
+        <item>30</item>
+        <item>50</item>
+        <item>50</item>
+        <item>25</item>
+        <item>0</item>
+        <item>1</item>
+    </integer-array>
 
     <string name="m5">DoubleAttack</string>
     <string name="m6">Heal</string>
@@ -12,43 +135,5 @@
     <string name="m8">Slow</string>
 
     <string name="noMP">"You don\'t have enough MP"</string>
-
-    <string-array name="move1">
-        <item>BasicAttack</item>
-        <item>Basic Attack</item>
-        <item>\'s basic attack dealt </item>
-        <item> to the </item>
-        <item>\'s basic attack has failed</item>
-    </string-array>
-
-    <string-array name="move2">
-        <item>FullSlash</item>
-        <item>Full Slash</item>
-        <item>\'s full slash dealt </item>
-        <item> to the </item>
-        <item>\'s full slash has failed</item>
-    </string-array>
-
-    <string-array name="move3">
-        <item>ChargedAttack</item>
-        <item>Charged Attack</item>
-        <item>\'s charged attack dealt </item>
-        <item> to the </item>
-        <item>\'s charged attack has failed</item>
-    </string-array>
-
-    <string-array name="move4">
-        <item>Stun</item>
-        <item>Stun</item>
-        <item>\'s stun dealt </item>
-        <item> to the </item>
-        <item>\'s stun has failed</item>
-    </string-array>
-
-
-
-
-
-
 
 </resources>

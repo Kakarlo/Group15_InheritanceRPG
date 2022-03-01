@@ -4,8 +4,31 @@ import android.content.Context;
 
 public class Hero {
     //Default Constructor
-    public Hero (Context context){
+    public Hero (Context context) {this.context = context;}
+
+    public Hero (Context context, String heroName, int heroHP, int heroMP, int heroBaseSpeed) {
         this.context = context;
+        this.heroName = heroName;
+        this.heroHP = heroHP;
+        this.heroMaxHP = heroHP;
+        this.heroMP = heroMP;
+        this.heroMaxMP = heroMP;
+        this.heroBaseSpeed = heroBaseSpeed;
+    }
+
+    public Hero (Context context, String heroName, int heroHP, int heroMP,
+                 int heroBaseSpeed, int move1, int move2, int move3, int move4) {
+        this.context = context;
+        this.heroName = heroName;
+        this.heroHP = heroHP;
+        this.heroMaxHP = heroHP;
+        this.heroMP = heroMP;
+        this.heroMaxMP = heroMP;
+        this.heroBaseSpeed = heroBaseSpeed;
+        this.heroTxt1 = context.getResources().getStringArray(move1);
+        this.heroTxt2 = context.getResources().getStringArray(move2);
+        this.heroTxt3 = context.getResources().getStringArray(move3);
+        this.heroTxt4 = context.getResources().getStringArray(move4);
     }
     //Hero Class
     private int heroHP;
@@ -16,74 +39,52 @@ public class Hero {
     private int heroBaseSpeed;
     private int heroCurrentSpeed;
     private int heroStunned;
-    private String heroName;
-    //skills sets
+    private int heroAtkState;
     private final Context context;
-    private int move1, move2, move3, move4;
-    private boolean state1, state2, state3, state4;
+    private String heroName;
+    private String[] heroTxt1, heroTxt2, heroTxt3, heroTxt4;
+    //TODO:made new changes
 
-    public void heroSkill (int move1, int move2, int move3, int move4) {
-        this.move1 = move1;
-        this.move2 = move2;
-        this.move3 = move3;
-        this.move4 = move4;
+    //Getter
+    //Skill selected
+    public int getHeroAtkState() {return this.heroAtkState;}
+    //Skill int[] names
+    public String getHeroSkill1() {return this.heroTxt1[0];}
+    public String getHeroSkill2() {return this.heroTxt2[0];}
+    public String getHeroSkill3() {return this.heroTxt3[0];}
+    public String getHeroSkill4() {return this.heroTxt4[0];}
+    //Skill actual name
+    public String getHeroSkillName1() {return this.heroTxt1[1];}
+    public String getHeroSkillName2() {return this.heroTxt2[1];}
+    public String getHeroSkillName3() {return this.heroTxt3[1];}
+    public String getHeroSkillName4() {return this.heroTxt4[1];}
+    //Skill Text
+    public String heroTxt1_1() {return this.heroTxt1[2];}
+    public String heroTxt2_1() {return this.heroTxt2[2];}
+    public String heroTxt3_1() {return this.heroTxt3[2];}
+    public String heroTxt4_1() {return this.heroTxt4[2];}
+    public String heroTxt1_2() {return this.heroTxt1[3];}
+    public String heroTxt2_2() {return this.heroTxt2[3];}
+    public String heroTxt3_2() {return this.heroTxt3[3];}
+    public String heroTxt4_2() {return this.heroTxt4[3];}
+    //Skill int[] (contains the data of the skill)
+    public int[] getHeroAtk1() {
+        int i = context.getResources().getIdentifier(getHeroSkill1(), "array", context.getPackageName());
+        return context.getResources().getIntArray(i);
     }
-    public String getSkill1() {return context.getResources().getString(move1).replaceAll("\\s+","");}
-    public String getSkill2() {return context.getResources().getString(move2).replaceAll("\\s+","");}
-    public String getSkill3() {return context.getResources().getString(move3).replaceAll("\\s+","");}
-    public String getSkill4() {return context.getResources().getString(move4).replaceAll("\\s+","");}
-    public String getSkillName1() {return context.getResources().getString(move1);}
-    public String getSkillName2() {return context.getResources().getString(move2);}
-    public String getSkillName3() {return context.getResources().getString(move3);}
-    public String getSkillName4() {return context.getResources().getString(move4);}
-
-    public int getMove1() {return this.move1;}
-    public int getMove2() {return this.move2;}
-    public int getMove3() {return this.move3;}
-    public int getMove4() {return this.move4;}
-
-    public Hero (Context context,
-                 String heroName,
-                 int heroHP,
-                 int heroMP,
-                 int heroBaseSpeed) {
-        this.context = context;
-        this.heroName = heroName;
-        this.heroHP = heroHP;
-        this.heroMaxHP = heroHP;
-        this.heroMP = heroMP;
-        this.heroMaxMP = heroMP;
-        this.heroBaseSpeed = heroBaseSpeed;
+    public int[] getHeroAtk2() {
+        int i = context.getResources().getIdentifier(getHeroSkill2(), "array", context.getPackageName());
+        return context.getResources().getIntArray(i);
     }
-
-    public Hero (Context context,
-                 String heroName,
-                 int heroHP,
-                 int heroMP,
-                 int heroBaseSpeed,
-                 int move1,
-                 int move2,
-                 int move3,
-                 int move4) {
-        this.context = context;
-        this.heroName = heroName;
-        this.heroHP = heroHP;
-        this.heroMaxHP = heroHP;
-        this.heroMP = heroMP;
-        this.heroMaxMP = heroMP;
-        this.heroBaseSpeed = heroBaseSpeed;
-        this.move1 = move1;
-        this.move2 = move2;
-        this.move3 = move3;
-        this.move4 = move4;
+    public int[] getHeroAtk3() {
+        int i = context.getResources().getIdentifier(getHeroSkill3(), "array", context.getPackageName());
+        return context.getResources().getIntArray(i);
+    }
+    public int[] getHeroAtk4() {
+        int i = context.getResources().getIdentifier(getHeroSkill4(), "array", context.getPackageName());
+        return context.getResources().getIntArray(i);
     }
 
-
-    //Getters
-    public boolean getState1() {return this.state1;}
-    public boolean getState2() {return this.state2;}
-    public boolean getState3() {return this.state3;}
-    public boolean getState4() {return this.state4;}
     public int getHeroHP() {return this.heroHP;}
     public int getHeroMaxHP() {return this.heroMaxHP;}
     public int getHeroMP() {return this.heroMP;}
@@ -97,10 +98,7 @@ public class Hero {
     public String getHeroName() {return this.heroName;}
 
     //Setters
-    public void setState1(boolean state) {this.state1 = state;}
-    public void setState2(boolean state) {this.state2 = state;}
-    public void setState3(boolean state) {this.state3 = state;}
-    public void setState4(boolean state) {this.state4 = state;}
+    public void setHeroAtkState(int state) {this.heroAtkState = state;}
     public void setHeroHP(int heroHP) {this.heroHP = heroHP;}
     public void setHeroMaxHP(int heroMaxHP) {this.heroMaxHP = heroMaxHP;}
     public void setHeroMP(int heroMP) {this.heroMP = heroMP;}

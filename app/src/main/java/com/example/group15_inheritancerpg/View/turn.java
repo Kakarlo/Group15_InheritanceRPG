@@ -6,7 +6,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -21,13 +20,11 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.example.group15_inheritancerpg.Controller.GameBehavior;
+import com.example.group15_inheritancerpg.Controller.Combat;
 import com.example.group15_inheritancerpg.Model.Hero;
 import com.example.group15_inheritancerpg.Model.Monster;
-import com.example.group15_inheritancerpg.Model.MoveSets;
 import com.example.group15_inheritancerpg.R;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Objects;
 
 @SuppressLint("SetTextI18n")
@@ -40,13 +37,12 @@ public class turn extends AppCompatActivity implements View.OnClickListener {
     FrameLayout infoBox,heroStat,monsStat;
     Animation leftRight,rightLeft;
 
-    GameBehavior langerbaul = new GameBehavior();
-    MoveSets move = new MoveSets();
-    Hero hero = new Hero(this, "Knight", 1500, 100, 110, R.string.m1, R.string.m2, R.string.m3, R.string.m4);
-    Monster monster = new Monster("Barathrum", 1000, 75, 90);
+    Hero hero;
+    Monster monster;
+    Combat langerbaul;
 
     public void turnCheck() {
-        if(langerbaul.speed(hero,monster)) {
+        if(langerbaul.speed()) {
             // Hero's turn
             showButton();
         } else {
@@ -60,11 +56,7 @@ public class turn extends AppCompatActivity implements View.OnClickListener {
             win();
             langerbaul.setReset(false);
         } else {
-            try {
-                hide(langerbaul.battlePhase(move, hero, monster, menuText));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            hide(langerbaul.battlePhase());
         }
         bar();
     }
@@ -109,7 +101,7 @@ public class turn extends AppCompatActivity implements View.OnClickListener {
 
     //resets the game
     public void win() {
-        if(langerbaul.reset(hero, monster)) {
+        if(langerbaul.reset()) {
             mwinIndicator.setVisibility(View.VISIBLE);
             mwinIndicator.setText("You WIN!");
         } else {
@@ -150,6 +142,7 @@ public class turn extends AppCompatActivity implements View.OnClickListener {
 
     //manual movement of turns
     public void next(View v) {
+        Log.d(TAG, "next: ");
         turnCheck();
         battle();
     }
@@ -170,6 +163,10 @@ public class turn extends AppCompatActivity implements View.OnClickListener {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         Objects.requireNonNull(getSupportActionBar()).hide();
         setContentView(R.layout.turn);
+
+        //Initializing class
+        hero = new Hero(this, "Knight", 1500, 100, 110, R.array.move1, R.array.move2, R.array.move3, R.array.move1);
+        monster = new Monster(this, "Barathrum", 1000, 75, 100 , R.array.move1, R.array.move2, R.array.move3, R.array.move1);
 
         //Animation Call
         leftRight = AnimationUtils.loadAnimation(this,R.anim.left_to_right);
@@ -223,10 +220,10 @@ public class turn extends AppCompatActivity implements View.OnClickListener {
             finish();
         });
         //Button Text
-        basicAttack.setText(hero.getSkillName1());
-        fullSlash.setText(hero.getSkillName2());
-        chargedAttack.setText(hero.getSkillName3());
-        stun.setText(hero.getSkillName4());
+        basicAttack.setText(hero.getHeroSkillName1());
+        fullSlash.setText(hero.getHeroSkillName2());
+        chargedAttack.setText(hero.getHeroSkillName3());
+        stun.setText(hero.getHeroSkillName4());
 
         //Layout
         menuBox = findViewById(R.id.menuBox);
@@ -238,11 +235,7 @@ public class turn extends AppCompatActivity implements View.OnClickListener {
         heroStat.setAnimation(leftRight);
         monsStat.setAnimation(rightLeft);
 
-        try {
-            langerbaul.moveSets(hero);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        langerbaul = new Combat(hero, monster, menuText);
 
         turnCheck();
     }
@@ -254,19 +247,22 @@ public class turn extends AppCompatActivity implements View.OnClickListener {
         mwinIndicator.setVisibility(View.GONE);
         switch (v.getId()) {
             case R.id.basicAttack:
-                hero.setState1(true);
+                hero.setHeroAtkState(1);
+                battle();
                 break;
             case R.id.fullSlash:
-                hero.setState2(true);
+                hero.setHeroAtkState(2);
+                battle();
                 break;
             case R.id.chargedAttack:
-                hero.setState3(true);
+                hero.setHeroAtkState(3);
+                battle();
                 break;
             case R.id.stun:
-                hero.setState4(true);
+                hero.setHeroAtkState(4);
+                battle();
                 break;
         }
-        battle();
     }
 
 }

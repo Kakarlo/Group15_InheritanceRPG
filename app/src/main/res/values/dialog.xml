@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="default_txtView">You are in Biology class, your teacher is discussing about the Performance Task that is due on Monday. What do you do?</string>
     <string name="default_Button1">Sample decision for the current situation</string>
     <string name="default_Button2">Sample text that would take up two lines within the button.</string>
