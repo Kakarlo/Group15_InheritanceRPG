@@ -6,19 +6,28 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.AnticipateInterpolator;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
+import androidx.interpolator.view.animation.LinearOutSlowInInterpolator;
 
 import com.example.group15_inheritancerpg.Controller.Combat;
 import com.example.group15_inheritancerpg.Model.Hero;
@@ -35,13 +44,48 @@ public class turn extends AppCompatActivity implements View.OnClickListener {
     TextView mheroHp,mheroMp,mheroName,mmonsHp,mmonsMp, mmonsName,menuText, mwinIndicator;
     ConstraintLayout menuBox;
     FrameLayout infoBox,heroStat,monsStat;
-    Animation leftRight,rightLeft;
+    Animation leftRight,rightLeft,ntest,ntest2;
+    ImageView test1,test2;
 
     Hero hero;
     Monster monster;
     Combat langerbaul;
+    int t1,t2,mo1,mo2,oneh=320;
+    float tt1,tt2,mm1,mm2;
+
+    //TODO: did some animation thing
+    //TODO: need to add some type of delay
+    public void asdf (){
+        t1 = hero.getHeroCurrentSpeed();
+        tt1 = t1 * 1f / oneh;
+        mo1 = monster.getMonsCurrentSpeed();
+        tt1 = mo1 * 1f / oneh;
+    }
+    public void asdf1 () {
+        t2 =hero.getHeroCurrentSpeed();
+        tt2 = t2 * 1f / oneh;
+        mo2=monster.getMonsCurrentSpeed();
+        mm2 = mo2 * 1f / oneh;
+        Log.d(TAG, "turnCheck: "+tt1 + "  "+tt2);
+
+        ntest = new TranslateAnimation( Animation.RELATIVE_TO_PARENT, tt1, Animation.RELATIVE_TO_PARENT,  tt2, Animation.RELATIVE_TO_PARENT,0f, Animation.RELATIVE_TO_PARENT, 0f);
+        ntest.setDuration(1500);
+        ntest.setStartOffset(200);
+        ntest.setInterpolator(new FastOutSlowInInterpolator());
+        ntest.setFillAfter(true);
+
+        ntest2 = new TranslateAnimation( Animation.RELATIVE_TO_PARENT, mm1, Animation.RELATIVE_TO_PARENT,  mm2, Animation.RELATIVE_TO_PARENT,0f, Animation.RELATIVE_TO_PARENT, 0f);
+        ntest2.setDuration(1500);
+        ntest2.setStartOffset(200);
+        ntest2.setInterpolator(new FastOutSlowInInterpolator());
+        ntest2.setFillAfter(true);
+
+        test1.startAnimation(ntest);
+        test2.startAnimation(ntest2);
+    }
 
     public void turnCheck() {
+        asdf();
         if(langerbaul.speed()) {
             // Hero's turn
             showButton();
@@ -49,6 +93,7 @@ public class turn extends AppCompatActivity implements View.OnClickListener {
             // Monster's turn
             hideButton();
         }
+        asdf1();
     }
 
     public void battle() { //attacks
@@ -142,7 +187,6 @@ public class turn extends AppCompatActivity implements View.OnClickListener {
 
     //manual movement of turns
     public void next(View v) {
-        Log.d(TAG, "next: ");
         turnCheck();
         battle();
     }
@@ -165,8 +209,8 @@ public class turn extends AppCompatActivity implements View.OnClickListener {
         setContentView(R.layout.turn);
 
         //Initializing class
-        hero = new Hero(this, "Knight", 1500, 100, 110, R.array.move1, R.array.move5, R.array.move3, R.array.move4);
-        monster = new Monster(this, "Barathrum", 1000, 75, 100 , R.array.move1, R.array.move5, R.array.move3, R.array.move4);
+        hero = new Hero(this, "Knight", 1500, 100, 120, R.array.move1, R.array.move5, R.array.move3, R.array.move4);
+        monster = new Monster(this, "Barathrum", 1000, 75, 90 , R.array.move1, R.array.move5, R.array.move3, R.array.move4);
 
         //Animation Call
         leftRight = AnimationUtils.loadAnimation(this,R.anim.left_to_right);
@@ -234,6 +278,10 @@ public class turn extends AppCompatActivity implements View.OnClickListener {
         //Animating
         heroStat.setAnimation(leftRight);
         monsStat.setAnimation(rightLeft);
+
+        //test
+        test1 = findViewById(R.id.imageView2);
+        test2 = findViewById(R.id.imageView3);
 
         langerbaul = new Combat(hero, monster, menuText);
 

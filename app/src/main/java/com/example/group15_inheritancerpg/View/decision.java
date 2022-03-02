@@ -277,7 +277,6 @@ public class decision extends AppCompatActivity implements View.OnClickListener{
                 d.setButtonState(4);
                 break;
         }
-        Log.d(TAG, "onClick: "+d.getChoice());
         dec.sceneCheck();
         textChange();
         if (d.getPopOutText() > 0) {

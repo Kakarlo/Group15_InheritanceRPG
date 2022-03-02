@@ -35,8 +35,8 @@ public class Combat {
     //Speed System
     public boolean speed(){
         while (hero.getHeroCurrentSpeed() <= speedLine && monster.getMonsCurrentSpeed() <= speedLine) {
-            hero.setHeroCurrentSpeed(hero.getHeroCurrentSpeed() + hero.getHeroBaseSpeed());
-            monster.setMonsCurrentSpeed(monster.getMonsCurrentSpeed() + monster.getMonsBaseSpeed());
+            hero.setHeroCurrentSpeed(hero.getHeroCurrentSpeed() + hero.getHeroBaseSpeed()/25);
+            monster.setMonsCurrentSpeed(monster.getMonsCurrentSpeed() + monster.getMonsBaseSpeed()/25);
         }
         if (hero.getHeroCurrentSpeed() == monster.getMonsCurrentSpeed()) {
             Random randomizer = new Random();
@@ -58,7 +58,7 @@ public class Combat {
         //Checks if you have enough mp
         if(hero.getHeroMP() >= atk[3] ) {
             Random randomizer = new Random();
-            int random = randomizer.nextInt(100) + 1;
+            int random = randomizer.nextInt(100);
             //checks for the attack chance
             if (random < atk[2]) {
                 hero.setHeroDamage(randomizer.nextInt(atk[1] - atk[0]) + atk[0]);

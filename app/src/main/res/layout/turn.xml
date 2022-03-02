@@ -354,6 +354,34 @@
         app:layout_constraintTop_toTopOf="@+id/menu" />
 
     <FrameLayout
+        android:layout_width="510dp"
+        android:layout_height="23dp"
+        app:layout_constraintBottom_toTopOf="@+id/menu"
+        app:layout_constraintEnd_toEndOf="@+id/menu"
+        app:layout_constraintStart_toStartOf="@+id/menu"
+        app:layout_constraintTop_toBottomOf="@+id/heroImage">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:background="@color/grey"
+            android:layout_marginTop="12dp"/>
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="23dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/barathrumicon" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="23dp"
+            android:layout_height="match_parent"
+            android:src="@drawable/knighticon" />
+    </FrameLayout>
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/infoTextBox"
