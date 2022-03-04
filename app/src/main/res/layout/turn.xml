@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/forestbackground"
-    tools:context=".Controller.Combat">
+    tools:context=".Controller.CombatController">
 
     <FrameLayout
         android:id="@+id/heroStatsLayout"
@@ -160,7 +160,7 @@
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="178dp"
                 android:layout_height="19dp"
-                android:progress="100"
+                android:progress="50"
                 android:progressDrawable="@drawable/custom_mp"
                 android:rotation="180"
                 app:layout_constraintBottom_toBottomOf="parent"

@@ -17,7 +17,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.example.group15_inheritancerpg.Controller.Combat;
+import com.example.group15_inheritancerpg.Controller.CombatController;
 import com.example.group15_inheritancerpg.R;
 
 import java.util.Objects;
@@ -33,7 +33,7 @@ public class CombatView extends AppCompatActivity implements View.OnClickListene
     public Animation leftRight,rightLeft,ntest,ntest2;
     public ImageView test1,test2;
 
-    Combat langerbaul;
+    CombatController langerbaul;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +45,7 @@ public class CombatView extends AppCompatActivity implements View.OnClickListene
         setContentView(R.layout.turn);
 
         //Class call
-        langerbaul = new Combat(this);
+        langerbaul = new CombatController(this);
 
         //Animation Call
         leftRight = AnimationUtils.loadAnimation(this,R.anim.left_to_right);

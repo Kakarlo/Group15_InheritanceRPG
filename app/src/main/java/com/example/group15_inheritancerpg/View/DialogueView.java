@@ -107,5 +107,6 @@ public class DialogueView extends AppCompatActivity implements View.OnClickListe
     protected void onStop() {
         super.onStop();
         dc.save();
+        dc.stop();
     }
 }

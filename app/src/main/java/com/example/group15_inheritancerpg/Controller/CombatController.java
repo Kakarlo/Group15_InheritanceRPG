@@ -18,13 +18,13 @@ import com.example.group15_inheritancerpg.R;
 import com.example.group15_inheritancerpg.View.CombatView;
 
 @SuppressLint("SetTextI18n")
-public class Combat {
+public class CombatController {
     private final Hero hero;
     private final Monster monster;
     private final AttackSystem atkSys;
     private final CombatView cv;
 
-    public Combat (CombatView combatView) {
+    public CombatController(CombatView combatView) {
         this.cv = combatView;
         this.atkSys = new AttackSystem(this);
         this.hero = atkSys.hero;
@@ -107,6 +107,7 @@ public class Combat {
         if (atkSys.getReset()) {
             win();
             atkSys.setReset(false);
+            turnCheck();
         } else {
             hide(atkSys.battlePhase());
         }

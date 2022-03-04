@@ -1,16 +1,16 @@
 package com.example.group15_inheritancerpg.Model.Data;
 
-import com.example.group15_inheritancerpg.Controller.Combat;
+import com.example.group15_inheritancerpg.Controller.CombatController;
 
 public class Hero {
-    private final Combat c;
+    private final CombatController c;
 
     //Default Constructor
-    public Hero (Combat combat) {
+    public Hero (CombatController combat) {
         this.c = combat;
     }
 
-    public Hero (Combat combat, String heroName, int heroHP, int heroMP, int heroBaseSpeed) {
+    public Hero (CombatController combat, String heroName, int heroHP, int heroMP, int heroBaseSpeed) {
         this.c = combat;
         this.heroName = heroName;
         this.heroHP = heroHP;
@@ -20,7 +20,7 @@ public class Hero {
         this.heroBaseSpeed = heroBaseSpeed;
     }
 
-    public Hero (Combat combat, String heroName, int heroHP, int heroMP,
+    public Hero (CombatController combat, String heroName, int heroHP, int heroMP,
                  int heroBaseSpeed, String[] move1, String[] move2, String[] move3, String[] move4) {
         this.c = combat;
         this.heroName = heroName;

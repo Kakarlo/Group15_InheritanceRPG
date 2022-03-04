@@ -4,7 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import android.util.Log;
 
-import com.example.group15_inheritancerpg.Controller.Combat;
+import com.example.group15_inheritancerpg.Controller.CombatController;
 import com.example.group15_inheritancerpg.Model.Data.Hero;
 import com.example.group15_inheritancerpg.Model.Data.Monster;
 import com.example.group15_inheritancerpg.R;
@@ -14,9 +14,9 @@ import java.util.Random;
 public class AttackSystem {
     public Hero hero;
     public Monster monster;
-    private final Combat c;
+    private final CombatController c;
 
-    public AttackSystem(Combat combat) {
+    public AttackSystem(CombatController combat) {
         this.c = combat;
         //Initializing class
         this.hero = new Hero(combat, "Knight", 1500, 100, 120, c.GetArray(R.array.move1), c.GetArray(R.array.move5), c.GetArray(R.array.move3), c.GetArray(R.array.move4));

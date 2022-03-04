@@ -1,11 +1,11 @@
 package com.example.group15_inheritancerpg.Model.Data;
 
-import com.example.group15_inheritancerpg.Controller.Combat;
+import com.example.group15_inheritancerpg.Controller.CombatController;
 
 public class Monster {
-    private final Combat c;
+    private final CombatController c;
 
-    public Monster (Combat combat, String monsName, int monsHP, int monsMP, int monsBaseSpeed) {
+    public Monster (CombatController combat, String monsName, int monsHP, int monsMP, int monsBaseSpeed) {
         this.c = combat;
         this.monsName = monsName;
         this.monsHP = monsHP;
@@ -15,8 +15,8 @@ public class Monster {
         this.monsBaseSpeed = monsBaseSpeed;
     }
 
-    public Monster (Combat combat, String monsName, int monsHP, int monsMP,
-                 int monsBaseSpeed, String[] move1, String[] move2, String[] move3, String[] move4) {
+    public Monster (CombatController combat, String monsName, int monsHP, int monsMP,
+                    int monsBaseSpeed, String[] move1, String[] move2, String[] move3, String[] move4) {
         this.c = combat;
         this.monsName = monsName;
         this.monsHP = monsHP;

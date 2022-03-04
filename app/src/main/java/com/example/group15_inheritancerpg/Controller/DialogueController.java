@@ -14,6 +14,7 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.core.text.HtmlCompat;
 
 import com.example.group15_inheritancerpg.Model.DataLogic.Dialogue;
+import com.example.group15_inheritancerpg.Model.DataLogic.MusicPlayer;
 import com.example.group15_inheritancerpg.R;
 import com.example.group15_inheritancerpg.View.DialogueView;
 
@@ -22,12 +23,15 @@ public class DialogueController {
     private final Dialogue d;
     private final DialogueView dv;
     private CountDownTimer timer;
+    private final MusicPlayer m;
     private final SharedPreferences sp;
 
     public DialogueController(DialogueView dialogueView) {
         this.dv = dialogueView;
         this.sp = dv.getPreferences(Context.MODE_PRIVATE);
         this.d = new Dialogue(this, sp);
+        this.m = new MusicPlayer(dialogueView);
+        m.startMusic();
     }
 
     public void firstScene(String[] stringArr) {
@@ -65,6 +69,10 @@ public class DialogueController {
     }
 
     public void save() {d.Save();}
+
+    public void stop() {
+        m.stopMusic();
+    }
 
     public void reset() {
         d.Reset();
