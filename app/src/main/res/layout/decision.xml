@@ -5,7 +5,7 @@
     android:id="@+id/constraintLayoutID"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Controller.DecisionMaking">
+    tools:context=".View.DialogueView">
 
     <ImageView
         android:id="@+id/backView"
@@ -81,13 +81,13 @@
             android:gravity="center"
             android:text="@string/default_Button1"
             android:textAllCaps="false"
-            app:layout_constraintBottom_toTopOf="@+id/base"
+            app:layout_constraintBottom_toTopOf="@+id/button2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/base"
+            android:id="@+id/button2"
             android:layout_width="369dp"
             android:layout_height="59dp"
             android:gravity="center"
@@ -107,10 +107,10 @@
             android:text="@string/default_Button3"
             android:textAllCaps="false"
             app:layout_constraintBottom_toTopOf="@+id/button4"
-            app:layout_constraintEnd_toEndOf="@+id/base"
+            app:layout_constraintEnd_toEndOf="@+id/button2"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="@+id/base"
-            app:layout_constraintTop_toBottomOf="@+id/base" />
+            app:layout_constraintStart_toStartOf="@+id/button2"
+            app:layout_constraintTop_toBottomOf="@+id/button2" />
 
         <Button
             android:id="@+id/button4"
@@ -148,13 +148,13 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
-        android:id="@+id/back"
+        android:id="@+id/reset"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
+        android:text="Reset Game"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/backView"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="@+id/backView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/backView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

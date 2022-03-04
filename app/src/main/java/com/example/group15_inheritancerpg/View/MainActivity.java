@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -28,15 +27,13 @@ public class MainActivity extends AppCompatActivity {
         btn2 = findViewById(R.id.base);
 
         btn1.setOnClickListener(view -> {
-            Intent intent = new Intent(MainActivity.this, decision.class);
+            Intent intent = new Intent(MainActivity.this, DialogueView.class);
             startActivity(intent);
-            finish();
         });
 
         btn2.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, turn.class);
             startActivity(intent);
-            finish();
         });
 
 

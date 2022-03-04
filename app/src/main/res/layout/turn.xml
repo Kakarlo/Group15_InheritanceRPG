@@ -354,7 +354,7 @@
         app:layout_constraintTop_toTopOf="@+id/menu" />
 
     <FrameLayout
-        android:layout_width="510dp"
+        android:layout_width="300dp"
         android:layout_height="23dp"
         app:layout_constraintBottom_toTopOf="@+id/menu"
         app:layout_constraintEnd_toEndOf="@+id/menu"

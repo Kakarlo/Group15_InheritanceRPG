@@ -50,7 +50,7 @@ public class turn extends AppCompatActivity implements View.OnClickListener {
     Hero hero;
     Monster monster;
     Combat langerbaul;
-    int t1,t2,mo1,mo2,oneh=320;
+    int t1,t2,mo1,mo2,oneh=328;
     float tt1,tt2,mm1,mm2;
 
     //TODO: did some animation thing

@@ -1,91 +1,220 @@
 package com.example.group15_inheritancerpg.Model;
 
-import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.content.SharedPreferences;
 
-import com.example.group15_inheritancerpg.R;
+import com.example.group15_inheritancerpg.Controller.DialogueController;
+
 
 public class Dialogue {
+    private final DialogueController dc;
+    private final SharedPreferences sp;
+    private SharedPreferences.Editor editor;
 
-    //Default constructor
-    public Dialogue(Context context, int firstScene) {
-        this.context = context;
-        defText= getContext().getResources().getStringArray(R.array.default_text);
-        mtext = context.getResources().getStringArray(firstScene);
+    public Dialogue(DialogueController controller, SharedPreferences sharedPreferences) {
+        this.dc = controller;
+        this.sp = sharedPreferences;
     }
 
-    private Drawable image;
-    private String[] mtext;
-    private final String[] defText;
+    private String[] txt;
+    private String[] firstTxt;
     private String choice;
-    private String check;
     private String ending;
-    private Context context;
+    //Where the image data is in the String []
+    private int imageNum;
+    //Delay of text
+    private int delay;
+    private final int delayMult = 20; //25 is a good speed
+    // Last item of the String []
+    private int lastItem;
+    //length of the String []
+    private int textLength;
+    //Choice thingy
+    private final int defTextLength = 12;
+    private final int choice4 = defTextLength;
+    private final int choice3 = choice4 - 2;
+    private final int choice2 = choice3 - 2;
+    private final int choice1 = choice2 - 2;
+    //Indicates which button is pressed
+    private int buttonState;
+    //Indicates which ending was activated
+    private boolean witchEnd,knightEnd,dragonEnd,priestEnd;
+    //Number of choices a Scenario will offer
+    private int numOfChoice;
+    //Number of clicks to skip text animation
+    private int textSkip;
+    //Which item was picked //TODO: could be made better for a more dynamic approach
+    public int getItemState() {return sp.getInt("ItemState", 0);} //Which item was picked
+    private int item;
+    boolean failed,restricted;
+    //Text Delay
+    boolean allowDelay = true;
 
-    private int arrID;      //Array ID (integer)
-    private int imgID;      //Image ID (integer)
-    private int imageState; //Which image to play
-    private int imageNum;   //Where the image data is in the String []
-    private int delay;      //Delay of text
-    private int lastItem;   // Last item of the String []
-    private int textLength; //length of the String []
+    public void sceneCheck(int state) {
+        buttonState = state;
+        if (buttonState == 0) {
+            //Runs if no choices has been made
+            arrayCheck();
+            textChange();
+        } else if (restricted) {
+            restricted = false;
+            restricted();
+        } else {
+            arrayCheck();
+            lastItem = txt.length - 1;
+            String check = txt[lastItem];
+            switch (check) {
+                case "Dialog":
+                    textChange();
+                    break;
+                case "Restricted":
+                    restricted = true;
+                    textLength -=1; //Done as the Restricted Array has 1 more item than the rest
+                    textChange();
+                    break;
+                case "Item":
+                    item = 2;
+                    textChange();
+                    break;
+                case "Ending":
+                    ending = choice;
+                    textChange();
+                    ending();
+                    break;
+            }
+        }
+    }
 
-    private int buttonState; //Indicates which button is pressed
-    private boolean witchEnd,knightEnd,dragonEnd,priestEnd; //Indicates which ending was activated
-    private int numOfChoice; //Number of choices a Scenario will offer
-    private int itemState;   //Which item was picked
-    private int itemCounter;
+    public void arrayCheck() {
+        //checks if the scenario is now restricted
+        if (buttonState != 0 && !failed) {
+            choice = txt[numOfChoice + buttonState];
+            dc.getStringArr();
+            textLength = txt.length;
+        } else if (failed) {
+            choice = txt[lastItem - 1];
+            dc.getStringArr();
+            textLength = txt.length;
+            failed = false;
+        } else {
+            textLength = txt.length;
+        }
+    }
 
-    private boolean popOut;
-    private int popOutText; //Which text to pop out
+    public void textChange() {
+        //Checks if delay is to be applied
+        if (allowDelay) {
+            delay = txt[0].length() * delayMult;
+        }
+        //Checks how many choices in that particular scene are
+        if (textLength == choice4){ //for 4 choices scenario
+            numOfChoice = 4;
+        } else if (textLength == choice3) { //for 3 choice scenario
+            numOfChoice = 3;
+        } else if (textLength == choice2) { // for 2 choice scenario
+            numOfChoice = 2;
+        } else if (textLength == choice1) { // for 1 choice scenario
+            numOfChoice = 1;
+        }
+        //Checks the item state
+        if (item > 1) {
+            item--;
+        } else if (item == 1) {
+            editor = sp.edit();
+            editor.putInt("ItemState" ,buttonState);
+            editor.apply();
+            item--;
+        }
+    }
+
+    public void restricted() {
+        //Checks if the first choice was pressed
+        if (buttonState == 1) {
+            //Checks if the user got an item
+            if (getItemState() > 0) {
+                //Checks if the correct item was retrieved
+                if (getItemState() == 2) {
+                    failed = false;
+                } else {
+                    dc.popOutText(1);
+                    failed = true;
+                }
+            } else {
+                dc.popOutText(2);
+                failed = true;
+            }
+            arrayCheck();
+            textChange();
+        } else if (buttonState == 2) {
+            textChange();
+        }
+    }
+
+    public void ending() {
+        //Checks which ending was activated
+        switch (ending) {
+            case "b2a2b2":
+                editor = sp.edit();
+                editor.putBoolean("WitchEnd" ,true);
+                editor.apply();
+                break;
+            case "b2b2a2":
+                editor = sp.edit();
+                editor.putBoolean("KnightEnd" ,true);
+                editor.apply();
+                break;
+            case "c2c2b2":
+                editor = sp.edit();
+                editor.putBoolean("DragonEnd" ,true);
+                editor.apply();
+                break;
+            case "c2d2a2":
+                editor = sp.edit();
+                editor.putBoolean("PriestEnd" ,true);
+                editor.apply();
+                break;
+        }
+    }
+
+    public int imageChange() {
+        //Changes image
+        return Integer.parseInt(txt[imageNum].replaceAll("[\\D]", ""));
+    }
+
+    public void Save() {
+        if (choice != null) {
+            editor = sp.edit();
+            editor.putString("textID", choice);
+            editor.apply();
+        }
+    }
+
+    public void Reset() {
+        editor = sp.edit();
+        editor.putString("textID", "null");
+        editor.putInt("ItemState" ,0);
+        editor.putBoolean("WitchEnd" ,false);
+        editor.putBoolean("KnightEnd" ,false);
+        editor.putBoolean("DragonEnd" ,false);
+        editor.putBoolean("PriestEnd" ,false);
+        editor.apply();
+    }
 
     //Getters
-    public Drawable getImage() {return image;}
-    public String[] getMtext() {return mtext;}
-    public String getMtextString(int index) {return mtext[index]; }
-    public String getChoice() {return this.choice;}
-    public String getCheck() {return this.check;}
-    public String getEnding() {return this.ending;}
-    public Context getContext() {return this.context;}
-    public int getArrID() {return this.arrID;}
-    public int getImgID() {return this.imgID;}
-    public int getImageState() {return this.imageState;}
-    public int getImageNum() {return this.imageNum;}
-    public int getDelay() {return this.delay;}
-    public int getDelayMult() {return 20;} //25 is a good speed
-    public int getLastItem() {return this.lastItem;}
-    public int getChoice4() {return this.defText.length;}
-    public int getChoice3() {return getChoice4() - 2;}
-    public int getChoice2() {return getChoice3() - 2;}
-    public int getChoice1() {return getChoice2() - 2;}
-    public int getTextLength() {return this.textLength;}
-    public int getButtonState() {return this.buttonState;}
-    public int getNumOfChoice() {return this.numOfChoice;}
-    public int getItemState() {return this.itemState;}
-    public int getItemCounter() {return this.itemCounter;}
-    public int getPopOutText() {return this.popOutText;}
-    public boolean getPopOut() {return this.popOut;}
-    public boolean getAllowDelay() {return true;}//for the dialogue delay
+    public String[] getFirstTxt() {return firstTxt;}
+    public String getTxtString(int index) {return txt[index];}
+    public String getChoice() {return choice;}
+    public int getDelay() {return delay;}
+    public int getNumOfChoice() {return numOfChoice;}
+    public int getTextSkip() {return textSkip;}
 
     //Setters
-    public void setImage(Drawable image) {this.image = image;}
-    public void setMtext(String[] mtext) {this.mtext = mtext;}
-    public void setMtext(int id) {this.mtext = this.context.getResources().getStringArray(id);}
-    public void setChoice(String choice) {this.choice = choice;}
-    public void setCheck(String check) {this.check = check;}
-    public void setEnding(String ending) {this.ending = ending;}
-    public void setContext(Context context) {this.context = context;}
-    public void setArrID(int arrID) {this.arrID = arrID;}
-    public void setImgID(int imgID) {this.imgID = imgID;}
-    public void setImageState(int imageState) {this.imageState = imageState;}
+    public void setFirstTxt(String[] firstTxt) {this.firstTxt = firstTxt;}
+    public void setTxt(String[] text) {this.txt = text;}
     public void setImageNum(int imageNum) {this.imageNum = imageNum;}
-    public void setDelay(int delay) {this.delay = delay;}
-    public void setLastItem(int lastItem) {this.lastItem = lastItem;}
-    public void setTextLength(int textLength) {this.textLength = textLength;}
-    public void setButtonState(int buttonState) {this.buttonState = buttonState;}
-    public void setNumOfChoice(int numOfChoice) {this.numOfChoice = numOfChoice;}
-    public void setItemState(int itemState) {this.itemState = itemState;}
-    public void setItemCounter(int itemCounter) {this.itemCounter = itemCounter;}
-    public void setPopOutText(int number) {this.popOutText = number;}
-    public void setPopOut(boolean popOut) {this.popOut = popOut;}
+    public void setTextSkip(int textSkip) {this.textSkip = textSkip;}
+
+
+
+
+
 }
