@@ -1,13 +1,17 @@
-package com.example.group15_inheritancerpg.Model;
+package com.example.group15_inheritancerpg.Model.Data;
 
-import android.content.Context;
+import com.example.group15_inheritancerpg.Controller.Combat;
 
 public class Hero {
-    //Default Constructor
-    public Hero (Context context) {this.context = context;}
+    private final Combat c;
 
-    public Hero (Context context, String heroName, int heroHP, int heroMP, int heroBaseSpeed) {
-        this.context = context;
+    //Default Constructor
+    public Hero (Combat combat) {
+        this.c = combat;
+    }
+
+    public Hero (Combat combat, String heroName, int heroHP, int heroMP, int heroBaseSpeed) {
+        this.c = combat;
         this.heroName = heroName;
         this.heroHP = heroHP;
         this.heroMaxHP = heroHP;
@@ -16,19 +20,19 @@ public class Hero {
         this.heroBaseSpeed = heroBaseSpeed;
     }
 
-    public Hero (Context context, String heroName, int heroHP, int heroMP,
-                 int heroBaseSpeed, int move1, int move2, int move3, int move4) {
-        this.context = context;
+    public Hero (Combat combat, String heroName, int heroHP, int heroMP,
+                 int heroBaseSpeed, String[] move1, String[] move2, String[] move3, String[] move4) {
+        this.c = combat;
         this.heroName = heroName;
         this.heroHP = heroHP;
         this.heroMaxHP = heroHP;
         this.heroMP = heroMP;
         this.heroMaxMP = heroMP;
         this.heroBaseSpeed = heroBaseSpeed;
-        this.heroTxt1 = context.getResources().getStringArray(move1);
-        this.heroTxt2 = context.getResources().getStringArray(move2);
-        this.heroTxt3 = context.getResources().getStringArray(move3);
-        this.heroTxt4 = context.getResources().getStringArray(move4);
+        this.heroTxt1 = move1;
+        this.heroTxt2 = move2;
+        this.heroTxt3 = move3;
+        this.heroTxt4 = move4;
     }
     //Hero Class
     private int heroHP;
@@ -40,7 +44,6 @@ public class Hero {
     private int heroCurrentSpeed;
     private int heroStunned;
     private int heroAtkState;
-    private final Context context;
     private String heroName;
     private String[] heroTxt1, heroTxt2, heroTxt3, heroTxt4;
     //TODO:made new changes
@@ -68,22 +71,10 @@ public class Hero {
     public String heroTxt3_2() {return this.heroTxt3[3];}
     public String heroTxt4_2() {return this.heroTxt4[3];}
     //Skill int[] (contains the data of the skill)
-    public int[] getHeroAtk1() {
-        int i = context.getResources().getIdentifier(getHeroSkill1(), "array", context.getPackageName());
-        return context.getResources().getIntArray(i);
-    }
-    public int[] getHeroAtk2() {
-        int i = context.getResources().getIdentifier(getHeroSkill2(), "array", context.getPackageName());
-        return context.getResources().getIntArray(i);
-    }
-    public int[] getHeroAtk3() {
-        int i = context.getResources().getIdentifier(getHeroSkill3(), "array", context.getPackageName());
-        return context.getResources().getIntArray(i);
-    }
-    public int[] getHeroAtk4() {
-        int i = context.getResources().getIdentifier(getHeroSkill4(), "array", context.getPackageName());
-        return context.getResources().getIntArray(i);
-    }
+    public int[] getHeroAtk1() {return c.GetIntArray(getHeroSkill1());}
+    public int[] getHeroAtk2() {return c.GetIntArray(getHeroSkill2());}
+    public int[] getHeroAtk3() {return c.GetIntArray(getHeroSkill3());}
+    public int[] getHeroAtk4() {return c.GetIntArray(getHeroSkill4());}
 
     public int getHeroHP() {return this.heroHP;}
     public int getHeroMaxHP() {return this.heroMaxHP;}

@@ -21,7 +21,7 @@
         </activity>
         <activity android:name=".View.DialogueView"
             android:exported="true"/>
-        <activity android:name=".View.turn"
+        <activity android:name=".View.CombatView"
             android:exported="true"/>
     </application>
 

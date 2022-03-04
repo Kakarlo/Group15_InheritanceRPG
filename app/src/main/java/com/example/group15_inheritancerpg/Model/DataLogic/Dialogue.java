@@ -1,4 +1,4 @@
-package com.example.group15_inheritancerpg.Model;
+package com.example.group15_inheritancerpg.Model.DataLogic;
 
 import android.content.SharedPreferences;
 

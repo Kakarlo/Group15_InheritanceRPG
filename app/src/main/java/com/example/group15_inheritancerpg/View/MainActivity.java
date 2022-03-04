@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         btn2.setOnClickListener(view -> {
-            Intent intent = new Intent(MainActivity.this, turn.class);
+            Intent intent = new Intent(MainActivity.this, CombatView.class);
             startActivity(intent);
         });
 

@@ -1,11 +1,12 @@
-package com.example.group15_inheritancerpg.Model;
+package com.example.group15_inheritancerpg.Model.Data;
 
-import android.content.Context;
+import com.example.group15_inheritancerpg.Controller.Combat;
 
 public class Monster {
+    private final Combat c;
 
-    public Monster (Context context, String monsName,int monsHP, int monsMP, int monsBaseSpeed) {
-        this.context = context;
+    public Monster (Combat combat, String monsName, int monsHP, int monsMP, int monsBaseSpeed) {
+        this.c = combat;
         this.monsName = monsName;
         this.monsHP = monsHP;
         this.monsMaxHP = monsHP;
@@ -14,19 +15,19 @@ public class Monster {
         this.monsBaseSpeed = monsBaseSpeed;
     }
 
-    public Monster (Context context, String monsName, int monsHP, int monsMP,
-                 int monsBaseSpeed, int move1, int move2, int move3, int move4) {
-        this.context = context;
+    public Monster (Combat combat, String monsName, int monsHP, int monsMP,
+                 int monsBaseSpeed, String[] move1, String[] move2, String[] move3, String[] move4) {
+        this.c = combat;
         this.monsName = monsName;
         this.monsHP = monsHP;
         this.monsMaxHP = monsHP;
         this.monsMP = monsMP;
         this.monsMaxMP = monsMP;
         this.monsBaseSpeed = monsBaseSpeed;
-        this.monsTxt1 = context.getResources().getStringArray(move1);
-        this.monsTxt2 = context.getResources().getStringArray(move2);
-        this.monsTxt3 = context.getResources().getStringArray(move3);
-        this.monsTxt4 = context.getResources().getStringArray(move4);
+        this.monsTxt1 = move1;
+        this.monsTxt2 = move2;
+        this.monsTxt3 = move3;
+        this.monsTxt4 = move4;
     }
     
     //Monster Class
@@ -39,7 +40,6 @@ public class Monster {
     private int monsCurrentSpeed;
     private int monsStunned;
     private int monsAtkState;
-    private final Context context;
     private String monsName;
     private String[] monsTxt1, monsTxt2, monsTxt3, monsTxt4;
 
@@ -66,22 +66,10 @@ public class Monster {
     public String monsTxt3_2() {return this.monsTxt3[3];}
     public String monsTxt4_2() {return this.monsTxt4[3];}
     //Skill int[] (contains the data of the skill)
-    public int[] getMonsAtk1() {
-        int i = context.getResources().getIdentifier(getMonsSkill1(), "array", context.getPackageName());
-        return context.getResources().getIntArray(i);
-    }
-    public int[] getMonsAtk2() {
-        int i = context.getResources().getIdentifier(getMonsSkill2(), "array", context.getPackageName());
-        return context.getResources().getIntArray(i);
-    }
-    public int[] getMonsAtk3() {
-        int i = context.getResources().getIdentifier(getMonsSkill3(), "array", context.getPackageName());
-        return context.getResources().getIntArray(i);
-    }
-    public int[] getMonsAtk4() {
-        int i = context.getResources().getIdentifier(getMonsSkill4(), "array", context.getPackageName());
-        return context.getResources().getIntArray(i);
-    }
+    public int[] getMonsAtk1() {return c.GetIntArray(getMonsSkill1());}
+    public int[] getMonsAtk2() {return c.GetIntArray(getMonsSkill2());}
+    public int[] getMonsAtk3() {return c.GetIntArray(getMonsSkill3());}
+    public int[] getMonsAtk4() {return c.GetIntArray(getMonsSkill4());}
     
     public int getMonsHP() {return this.monsHP;}
     public int getMonsMaxHP() {return this.monsMaxHP;}

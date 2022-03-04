@@ -273,8 +273,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/menuBox"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:onClick="next">
+            android:layout_height="match_parent">
 
             <Button
                 android:id="@+id/basicAttack"
@@ -344,7 +343,6 @@
 
     <Button style="@style/CustomInfoStyle"
         android:id="@+id/info"
-        android:onClick="info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/info"
@@ -385,8 +383,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/infoTextBox"
-        android:visibility="gone"
-        android:onClick="info">
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/infoText"

@@ -13,7 +13,7 @@ import android.view.animation.Animation;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.text.HtmlCompat;
 
-import com.example.group15_inheritancerpg.Model.Dialogue;
+import com.example.group15_inheritancerpg.Model.DataLogic.Dialogue;
 import com.example.group15_inheritancerpg.R;
 import com.example.group15_inheritancerpg.View.DialogueView;
 

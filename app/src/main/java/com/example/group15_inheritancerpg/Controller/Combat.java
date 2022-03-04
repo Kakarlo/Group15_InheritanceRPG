@@ -3,373 +3,208 @@ package com.example.group15_inheritancerpg.Controller;
 import static android.content.ContentValues.TAG;
 
 import android.annotation.SuppressLint;
+import android.content.res.ColorStateList;
 import android.util.Log;
-import android.widget.TextView;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 
-import com.example.group15_inheritancerpg.Model.Hero;
-import com.example.group15_inheritancerpg.Model.Monster;
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 
-import java.util.Random;
+import com.example.group15_inheritancerpg.Model.Logic.AttackSystem;
+import com.example.group15_inheritancerpg.Model.Data.Hero;
+import com.example.group15_inheritancerpg.Model.Data.Monster;
+import com.example.group15_inheritancerpg.R;
+import com.example.group15_inheritancerpg.View.CombatView;
 
 @SuppressLint("SetTextI18n")
 public class Combat {
+    private final Hero hero;
+    private final Monster monster;
+    private final AttackSystem atkSys;
+    private final CombatView cv;
 
-    public Combat( Hero hero, Monster monster, TextView textDisplay) {
-        this.hero = hero;
-        this.monster = monster;
-        this.menuText = textDisplay;
-    }
-    Hero hero;
-    Monster monster;
-    TextView menuText;
-
-    private final int speedLine = 300;
-    private boolean win;
-    private boolean reset;
-    private boolean moved;
-    int randomAttack;
-
-    public boolean getReset() {return this.reset;}
-    public void setReset(Boolean state) {this.reset = state;}
-
-    //Speed System
-    public boolean speed(){
-        while (hero.getHeroCurrentSpeed() <= speedLine && monster.getMonsCurrentSpeed() <= speedLine) {
-            hero.setHeroCurrentSpeed(hero.getHeroCurrentSpeed() + hero.getHeroBaseSpeed()/25);
-            monster.setMonsCurrentSpeed(monster.getMonsCurrentSpeed() + monster.getMonsBaseSpeed()/25);
-        }
-        if (hero.getHeroCurrentSpeed() == monster.getMonsCurrentSpeed()) {
-            Random randomizer = new Random();
-            int rando = randomizer.nextInt(100);
-            if (rando >= 50) {
-                hero.setHeroCurrentSpeed(hero.getHeroCurrentSpeed() - 10);
-            } else {
-                monster.setMonsCurrentSpeed(monster.getMonsCurrentSpeed() - 10);
-            }
-        }
-        Log.d(TAG, "after hero: "+hero.getHeroCurrentSpeed());
-        Log.d(TAG, "monster: "+monster.getMonsCurrentSpeed());
-        return hero.getHeroCurrentSpeed() >= speedLine && hero.getHeroCurrentSpeed() > monster.getMonsCurrentSpeed();
+    public Combat (CombatView combatView) {
+        this.cv = combatView;
+        this.atkSys = new AttackSystem(this);
+        this.hero = atkSys.hero;
+        this.monster = atkSys.monster;
     }
 
-    //Attack system
+    public void textSet() {
+        //setting the textviews
+        cv.mheroHp.setText(String.valueOf(hero.getHeroHP()));
+        cv.mheroMp.setText(String.valueOf(hero.getHeroMP()));
+        cv.mheroName.setText(hero.getHeroName());
+        cv.mmonsHp.setText(String.valueOf(monster.getMonsHP()));
+        cv.mmonsMp.setText(String.valueOf(monster.getMonsMP()));
+        cv.mmonsName.setText(monster.getMonsName());
+        //Button Text
+        cv.basicAttack.setText(hero.getHeroSkillName1());
+        cv.fullSlash.setText(hero.getHeroSkillName2());
+        cv.chargedAttack.setText(hero.getHeroSkillName3());
+        cv.stun.setText(hero.getHeroSkillName4());
+    }
 
-    private void heroAttackSys(int[] atk) {
-        //Checks if you have enough mp
-        if(hero.getHeroMP() >= atk[3] ) {
-            Random randomizer = new Random();
-            int random = randomizer.nextInt(100);
-            //checks for the attack chance
-            if (random < atk[2]) {
-                hero.setHeroDamage(randomizer.nextInt(atk[1] - atk[0]) + atk[0]);
-                monster.setMonsHP(monster.getMonsHP() - hero.getHeroDamage());
-                menuText.setText(hero.getHeroName() + heroAttackTxt(1) + hero.getHeroDamage() + " to the " + monster.getMonsName());
-                heroSpecial(atk);
-                Log.d(TAG, "hero: " + hero.getHeroAtkState() + hero.getHeroName() + heroAttackTxt(1) + hero.getHeroDamage() + " to the " + monster.getMonsName());
-            } else {
-                menuText.setText(hero.getHeroName() + heroAttackTxt(2));
-                Log.d(TAG, "hero miss: "+ hero.getHeroAtkState()  + hero.getHeroName() + heroAttackTxt(2));
-            }
-            //checks if MP is max
-            if (hero.getHeroMP() != hero.getHeroMaxMP() && hero.getHeroMP() < hero.getHeroMaxMP()) {
-                    hero.setHeroMP(hero.getHeroMP() + atk[4]);
-            }
-            hero.setHeroCurrentSpeed(hero.getHeroCurrentSpeed() - speedLine);
-            hero.setHeroMP(hero.getHeroMP() - atk[3]);
+    public String[] GetArray(int arrID) {
+        return cv.getResources().getStringArray(arrID);
+    }
+
+    public int[] GetIntArray(String ID) {
+        int i = cv.getResources().getIdentifier(ID, "array", cv.getPackageName());
+        return cv.getResources().getIntArray(i);
+    }
+
+    int t1,t2,mo1,mo2,oneh=328;
+    float tt1,tt2,mm1,mm2;
+
+    //TODO: did some animation thing
+    //TODO: need to add some type of delay
+    public void asdf (){
+        t1 = hero.getHeroCurrentSpeed();
+        tt1 = t1 * 1f / oneh;
+        mo1 = monster.getMonsCurrentSpeed();
+        tt1 = mo1 * 1f / oneh;
+    }
+    public void asdf1 () {
+        t2 = hero.getHeroCurrentSpeed();
+        tt2 = t2 * 1f / oneh;
+        mo2= monster.getMonsCurrentSpeed();
+        mm2 = mo2 * 1f / oneh;
+        Log.d(TAG, "turnCheck: "+tt1 + "  "+tt2);
+
+        cv.ntest = new TranslateAnimation( Animation.RELATIVE_TO_PARENT, tt1, Animation.RELATIVE_TO_PARENT,  tt2, Animation.RELATIVE_TO_PARENT,0f, Animation.RELATIVE_TO_PARENT, 0f);
+        cv.ntest.setDuration(1500);
+        cv.ntest.setStartOffset(200);
+        cv.ntest.setInterpolator(new FastOutSlowInInterpolator());
+        cv.ntest.setFillAfter(true);
+
+        cv.ntest2 = new TranslateAnimation( Animation.RELATIVE_TO_PARENT, mm1, Animation.RELATIVE_TO_PARENT,  mm2, Animation.RELATIVE_TO_PARENT,0f, Animation.RELATIVE_TO_PARENT, 0f);
+        cv.ntest2.setDuration(1500);
+        cv.ntest2.setStartOffset(200);
+        cv.ntest2.setInterpolator(new FastOutSlowInInterpolator());
+        cv.ntest2.setFillAfter(true);
+
+        cv.test1.startAnimation(cv.ntest);
+        cv.test2.startAnimation(cv.ntest2);
+    }
+
+    public void turnCheck() {
+        asdf();
+        if(atkSys.speed()) {
+            // Hero's turn
+            showButton();
         } else {
-            menuText.setText("You don't have enough MP");
+            // Monster's turn
+            hideButton();
         }
+        asdf1();
     }
 
-    private void heroSpecial(int[] atk) {
-        int x = atk[atk.length - 1];
-        switch (x) {
-            case 1:
-                break;
-            case 2:
-                monster.setMonsStunned(atk[atk.length - 2]);
-                break;
-            case 3:
-                int a = atk[atk.length - 2];
-                int b = hero.getHeroMaxHP();
-                int c = b * a / 100;
-                hero.setHeroHP(hero.getHeroHP() + c);
-                if (hero.getHeroHP() > hero.getHeroMaxHP()){
-                    hero.setHeroHP(hero.getHeroMaxHP());
-                }
-                break;
-            case 4:
-                //monster.setMonsBurned(atk[atk.length - 2]);
-                //monster.setMonsBurnedDamage(atk[atk.length - 3]);
-                break;
-            case 5:
-                //slowness
-                break;
-            case 6:
-                //freeze
-                //freeze damage
-                break;
-            case 7:
-                //lower enemy stats
-                break;
-            case 8:
-                //elevate certain state
-                break;
-        }
-
-    }
-
-    private void monsAttackSys(int[] atk) {
-        //Checks if you have enough mp
-        monster.setMonsCurrentSpeed(monster.getMonsCurrentSpeed() - speedLine);
-        if(monster.getMonsMP() >= atk[3] ) {
-            Random randomizer = new Random();
-            int random = randomizer.nextInt(100) + 1;
-            //checks for the attack chance
-            if (random < atk[2]) {
-                monster.setMonsDamage(randomizer.nextInt(atk[1] - atk[0]) + atk[0]);
-                hero.setHeroHP(hero.getHeroHP() - monster.getMonsDamage());
-                menuText.setText(monster.getMonsName() + monsAttackTxt(1) + monster.getMonsDamage() + " to the " + hero.getHeroName());
-                monsSpecial(atk);
-                Log.d(TAG, "monsAttackSys: " + monster.getMonsName() + monsAttackTxt(1) + monster.getMonsDamage() + " to the " + hero.getHeroName());
-            } else {
-                menuText.setText(monster.getMonsName() + monsAttackTxt(2));
-                Log.d(TAG, "mons miss: " + monster.getMonsName() + monsAttackTxt(2));
-            }
-            //checks if MP is max
-            if (monster.getMonsMP() != monster.getMonsMaxMP() && monster.getMonsMP() < monster.getMonsMaxMP()) {
-                monster.setMonsMP(monster.getMonsMP() + atk[4]);
-            }
-            monster.setMonsMP(monster.getMonsMP() - atk[3]);
+    public void battle(int state) { //attacks
+        cv.mwinIndicator.setVisibility(View.GONE);
+        hero.setHeroAtkState(state);
+        if (atkSys.getReset()) {
+            win();
+            atkSys.setReset(false);
         } else {
-            int[] basic = monster.getMonsAtk1();
-            Random randomizer = new Random();
-            monster.setMonsDamage(randomizer.nextInt(basic[1] - basic[0]) + basic[0]);
-            hero.setHeroHP(hero.getHeroHP() - monster.getMonsDamage());
-            menuText.setText(monster.getMonsName() + monsAttackTxt(3) + monster.getMonsDamage() + " to the " + hero.getHeroName());
+            hide(atkSys.battlePhase());
+        }
+        bar();
+    }
 
-            if (monster.getMonsMP() != monster.getMonsMaxMP() && monster.getMonsMP() < monster.getMonsMaxMP()) {
-                monster.setMonsMP(monster.getMonsMP() + basic[4]);
-            }
+    public void changeText() {cv.menuText.setText(atkSys.menuText);}
+
+    public void showButton(){
+        //enables and shows the buttons
+        cv.basicAttack.setVisibility(View.VISIBLE);
+        cv.fullSlash.setVisibility(View.VISIBLE);
+        cv.chargedAttack.setVisibility(View.VISIBLE);
+        cv.stun.setVisibility(View.VISIBLE);
+        cv.basicAttack.setClickable(true);
+        cv.fullSlash.setClickable(true);
+        cv.chargedAttack.setClickable(true);
+        cv.stun.setClickable(true);
+        //disables the menuText
+        cv.menuText.setVisibility(View.GONE);
+        //disables layout click
+        cv.menuBox.setClickable(false);
+    }
+
+    public void hideButton(){
+        //disables and shows the buttons
+        cv.basicAttack.setVisibility(View.GONE);
+        cv.fullSlash.setVisibility(View.GONE);
+        cv.chargedAttack.setVisibility(View.GONE);
+        cv.stun.setVisibility(View.GONE);
+        cv.basicAttack.setClickable(false);
+        cv.fullSlash.setClickable(false);
+        cv.chargedAttack.setClickable(false);
+        cv.stun.setClickable(false);
+        //enables the menuText
+        cv.menuText.setVisibility(View.VISIBLE);
+        //enables layout click
+        cv.menuBox.setClickable(true);
+    }
+
+    public void hide(boolean move){
+        if (move) {
+            hideButton();
         }
     }
 
-    private void monsSpecial(int[] atk) {
-        int x = atk[atk.length - 1];
-        switch (x) {
-            case 1:
-                break;
-            case 2:
-                hero.setHeroStunned(atk[atk.length - 2]);
-                break;
-            case 3:
-                int a = atk[atk.length - 2];
-                int b = monster.getMonsMaxHP();
-                int c = b * a / 100;
-                monster.setMonsHP(monster.getMonsHP() + c);
-                if (monster.getMonsHP() > monster.getMonsMaxHP()) {
-                    monster.setMonsHP(monster.getMonsMaxHP());
-                }
-                break;
-            case 4:
-                //monster.setMonsBurned(atk[atk.length - 2]);
-                //monster.setMonsBurnedDamage(atk[atk.length - 3]);
-                break;
-            case 5:
-                //slowness
-                break;
-            case 6:
-                //freeze
-                //freeze damage
-                break;
-            case 7:
-                //lower enemy stats
-                break;
-            case 8:
-                //elevate certain state
-                break;
-        }
-
-    }
-
-    private String heroAttackTxt(int i ) {
-        String text = " ";
-        if (i == 1) {
-            switch (hero.getHeroAtkState()) {
-                case 1:
-                    text = hero.heroTxt1_1();
-                    break;
-                case 2:
-                    text = hero.heroTxt2_1();
-                    break;
-                case 3:
-                    text = hero.heroTxt3_1();
-                    break;
-                case 4:
-                    text = hero.heroTxt4_1();
-                    break;
-            }
-        } else if (i == 2) {
-            switch (hero.getHeroAtkState()) {
-                case 1:
-                    text = hero.heroTxt1_2();
-                    break;
-                case 2:
-                    text = hero.heroTxt2_2();
-                    break;
-                case 3:
-                    text = hero.heroTxt3_2();
-                    break;
-                case 4:
-                    text = hero.heroTxt4_2();
-                    break;
-            }
-        }
-        return text;
-    }
-
-    private String monsAttackTxt(int i ) {
-        String text = " ";
-        if (i == 1) {
-            switch (randomAttack) {
-                case 0:
-                    text = monster.monsTxt1_1();
-                    break;
-                case 1:
-                    text = monster.monsTxt2_1();
-                    break;
-                case 2:
-                    text = monster.monsTxt3_1();
-                    break;
-                case 3:
-                    text = monster.monsTxt4_1();
-                    break;
-            }
-        } else if (i == 2) {
-            switch (randomAttack) {
-                case 0:
-                    text = monster.monsTxt1_2();
-                    break;
-                case 1:
-                    text = monster.monsTxt2_2();
-                    break;
-                case 2:
-                    text = monster.monsTxt3_2();
-                    break;
-                case 3:
-                    text = monster.monsTxt4_2();
-                    break;
-            }
+    //resets the game
+    public void win() {
+        if(atkSys.reset()) {
+            cv.mwinIndicator.setVisibility(View.VISIBLE);
+            cv.mwinIndicator.setText("You WIN!");
         } else {
-            Log.d(TAG, "monsAttackTxt: ");
-            text = monster.monsTxt1_1();
+            cv.mwinIndicator.setVisibility(View.VISIBLE);
+            cv.mwinIndicator.setText("You LOSE!");
         }
-        return text;
     }
 
-    //battle phase
-    public boolean battlePhase() {
-        Random randomizer = new Random();
-        moved = false;
-        if (hero.getHeroCurrentSpeed() > monster.getMonsCurrentSpeed() && hero.getHeroCurrentSpeed() >= speedLine) {
-            if (!heroDebuffed()){
-                Log.d(TAG, "battlePhase: " + hero.getHeroAtkState());
-                switch (hero.getHeroAtkState()) {
-                    case 1:
-                        heroAttackSys(hero.getHeroAtk1());
-                        hero.setHeroAtkState(0);
-                        moved = true;
-                        break;
-                    case 2:
-                        heroAttackSys(hero.getHeroAtk2());
-                        hero.setHeroAtkState(0);
-                        moved = true;
-                        break;
-                    case 3:
-                        heroAttackSys(hero.getHeroAtk3());
-                        hero.setHeroAtkState(0);
-                        moved = true;
-                        break;
-                    case 4:
-                        heroAttackSys(hero.getHeroAtk4());
-                        hero.setHeroAtkState(0);
-                        moved = true;
-                        break;
-                }
-                if (monster.getMonsHP() <= 0) {
-                    reset = true;
-                    win = true;
-                    moved = true;
-                }
-            }
-        } else if (monster.getMonsCurrentSpeed() > hero.getHeroCurrentSpeed() && monster.getMonsCurrentSpeed() >= speedLine) {
-            if (!monsterDebuffed()){
-                randomAttack = randomizer.nextInt(4);
-                switch (randomAttack) {
-                    case 0:
-                        monsAttackSys(monster.getMonsAtk1());
-                        moved = true;
-                        break;
-                    case 1:
-                        monsAttackSys(monster.getMonsAtk2());
-                        moved = true;
-                        break;
-                    case 2:
-                        monsAttackSys(monster.getMonsAtk3());
-                        moved = true;
-                        break;
-                    case 3:
-                        monsAttackSys(monster.getMonsAtk4());
-                        moved = true;
-                        break;
-                }
-                if (hero.getHeroHP() <= 0) {
-                    reset = true;
-                    win = false;
-                    moved = true;
-                }
-            }
+    public void bar() {
+        //sets the mp and hp
+        cv.mheroHp.setText(String.valueOf(hero.getHeroHP()));
+        cv.mheroMp.setText(String.valueOf(hero.getHeroMP()));
+        cv.mmonsHp.setText(String.valueOf(monster.getMonsHP()));
+        cv.mmonsMp.setText(String.valueOf(monster.getMonsMP()));
+        //Setting the hp/mp bar
+        cv.heroHpBar.setProgress(hero.getHeroHpPercent(), true);
+        cv.heroMpBar.setProgress(hero.getHeroMpPercent(), true);
+        cv.monsHpBar.setProgress(monster.getMonsHpPercent(),true);
+        cv.monsMpBar.setProgress(monster.getMonsMpPercent(), true);
+
+        //Changes the color of the hp
+        if (hero.getHeroHpPercent() > 30 && hero.getHeroHpPercent() <= 75 ) {
+            cv.heroHpBar.setProgressTintList(ColorStateList.valueOf(cv.getResources().getColor(R.color.Mid)));// for the r.color thingy kay go to colors and make some color
+        } else if (hero.getHeroHpPercent() >= 0 && hero.getHeroHpPercent() <= 30 ) {
+            cv.heroHpBar.setProgressTintList(ColorStateList.valueOf(cv.getResources().getColor(R.color.Low)));
+        } else {
+            cv. heroHpBar.setProgressTintList(ColorStateList.valueOf((cv.getResources().getColor(R.color.Max))));
         }
-    return moved;
+        //Changes the color of the hp
+        if (monster.getMonsHpPercent() > 30 && monster.getMonsHpPercent() <= 75 ) {
+            cv.monsHpBar.setProgressTintList(ColorStateList.valueOf(cv.getResources().getColor(R.color.Mid)));// for the r.color thingy kay go to colors and make some color
+        } else if (monster.getMonsHpPercent() >= 0 && monster.getMonsHpPercent() <= 30 ) {
+            cv.monsHpBar.setProgressTintList(ColorStateList.valueOf(cv.getResources().getColor(R.color.Low)));
+        } else {
+            cv.monsHpBar.setProgressTintList(ColorStateList.valueOf((cv.getResources().getColor(R.color.Max))));
+        }
     }
 
-    private boolean heroDebuffed() {
-        boolean heroDebuffed = false;
-        if (hero.getHeroStunned() > 0) {
-            menuText.setText(hero.getHeroName() + " is stunned for " + hero.getHeroStunned() + " turns");
-            hero.setHeroStunned(hero.getHeroStunned() - 1);
-            hero.setHeroCurrentSpeed(hero.getHeroCurrentSpeed() - speedLine);
-            moved = true;
-            heroDebuffed = true;
-        }
-        return heroDebuffed;
+    //manual movement of turns
+    public void next() {
+        turnCheck();
+        battle(0);
     }
 
-    private boolean monsterDebuffed() {
-        boolean monsDebuffed = false;
-        if (monster.getMonsStunned() > 0) {
-            menuText.setText(monster.getMonsName() + " is stunned for " + monster.getMonsStunned() + " turns");
-            monster.setMonsStunned(monster.getMonsStunned() - 1);
-            monster.setMonsCurrentSpeed(monster.getMonsCurrentSpeed() - speedLine);
-            moved = true;
-            monsDebuffed = true;
+    public void info() {
+        if(cv.infoBox.getVisibility() == View.GONE){
+            cv.infoBox.setVisibility(View.VISIBLE);
+        } else {
+            cv.infoBox.setVisibility(View.GONE);
         }
-        return monsDebuffed;
-    }
-
-    //reset stats back
-    public boolean reset() {
-        hero.setHeroHP(hero.getHeroMaxHP());
-        hero.setHeroMP(hero.getHeroMaxMP());
-        monster.setMonsHP(monster.getMonsMaxHP());
-        monster.setMonsMP(monster.getMonsMaxMP());
-        hero.setHeroDamage(0);
-        hero.setHeroStunned(0);
-        hero.setHeroCurrentSpeed(0);
-        hero.setHeroAtkState(0);
-        monster.setMonsDamage(0);
-        monster.setMonsStunned(0);
-        monster.setMonsCurrentSpeed(0);
-        return win;
     }
 }
